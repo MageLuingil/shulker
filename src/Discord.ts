@@ -138,6 +138,36 @@ class Discord {
     rcon.close()
   }
 
+  private buildRawJSONText(username: string, discriminator: string, text: string): string {
+    let components: any[] = [{
+      color: this.config.MINECRAFT_JSONTEXT_USERNAME_COLOR || 'white',
+      text: (this.config.MINECRAFT_JSONTEXT_USERNAME_FORMAT || '<%username%>')
+        .replace('%username%', username)
+        .replace('%discriminator%', discriminator)
+    }, ' ']
+    let spoiler = false
+    for (const piece of text.split(/(\|\|)/)) {
+      if (this.config.MINECRAFT_JSONTEXT_SPOILERS && piece === '||')
+        spoiler = !spoiler
+      else if (!spoiler)
+        components.push({
+          color: this.config.MINECRAFT_JSONTEXT_COLOR || 'white',
+          text: piece
+        })
+      else
+        components.push({
+          color: this.config.MINECRAFT_JSONTEXT_COLOR || 'white',
+          text: piece,
+          obfuscated: true,
+          hoverEvent: {
+            action: 'show_text',
+            value: [piece]
+          }
+        })
+    }
+    return JSON.stringify(components)
+  }
+
   private makeMinecraftTellraw(message: Message): string {
     const variables: {[index: string]: string} = {
       username: emojiStrip(message.author.username),
@@ -145,6 +175,11 @@ class Discord {
       discriminator: message.author.discriminator,
       text: emojiStrip(message.cleanContent)
     }
+
+    // Build and return proper JSON if configured
+    if (this.config.MINECRAFT_JSONTEXT)
+      return this.buildRawJSONText(variables.username, variables.discriminator, variables.text);
+
     // hastily use JSON to encode the strings
     for (const v of Object.keys(variables)) {
       variables[v] = JSON.stringify(variables[v]).slice(1,-1)
@@ -195,14 +230,19 @@ class Discord {
     return message
   }
 
-  private makeDiscordWebhook (username: string, message: string) {
+  private makeDiscordWebhook (username: string, message: string, uuid: string) {
     message = this.replaceDiscordMentions(message)
 
+    const steve = 'https://minotar.net/helm/Steve/256.png'
     let avatarURL
-    if (username === this.config.SERVER_NAME + ' - Server') { // use avatar for the server
-      avatarURL = this.config.SERVER_IMAGE || 'https://minotar.net/helm/Steve/256.png'
+    if (uuid === 'server') { // use avatar for the server
+      avatarURL = this.config.SERVER_IMAGE || steve
+    } else if (this.config.AVATAR_URL.includes('%uuid%') && !uuid) { // Use default because config needs a UUID and we don't have one
+      avatarURL = this.config.AVATAR_DEFAULT || steve
     } else { // use avatar for player
-      avatarURL = `https://minotar.net/helm/${username}/256.png`
+      avatarURL = (this.config.AVATAR_URL || this.config.AVATAR_DEFAULT || steve)
+        .replace('%username%', username)
+        .replace('%uuid%', uuid)
     }
 
     return {
@@ -220,9 +260,9 @@ class Discord {
       .replace('%message%', message)
   }
 
-  public async sendMessage (username: string, message: string) {
+  public async sendMessage (username: string, message: string, uuid: string) {
     if (this.config.USE_WEBHOOKS) {
-      const webhook = this.makeDiscordWebhook(username, message)
+      const webhook = this.makeDiscordWebhook(username, message, uuid)
       try {
         await axios.post(this.config.WEBHOOK_URL, webhook, { headers: { 'Content-Type': 'application/json' } })
       } catch (e) {

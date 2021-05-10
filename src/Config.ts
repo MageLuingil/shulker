@@ -3,7 +3,6 @@ export interface Config {
 
   USE_WEBHOOKS: boolean
   WEBHOOK_URL: string
-  IGNORE_WEBHOOKS: string
   DISCORD_TOKEN: string
   DISCORD_CHANNEL_ID: string
   DISCORD_CHANNEL_NAME: string
@@ -15,6 +14,11 @@ export interface Config {
   MINECRAFT_TELLRAW_DOESNT_EXIST: boolean
   MINECRAFT_TELLRAW_DOESNT_EXIST_SAY_TEMPLATE: string
   MINECRAFT_TELLRAW_TEMPLATE: string
+  MINECRAFT_JSONTEXT: boolean
+  MINECRAFT_JSONTEXT_USERNAME_COLOR: string
+  MINECRAFT_JSONTEXT_USERNAME_FORMAT: string
+  MINECRAFT_JSONTEXT_COLOR: string
+  MINECRAFT_JSONTEXT_SPOILERS: boolean
 
   IS_LOCAL_FILE: boolean
   LOCAL_FILE_PATH: string
@@ -30,6 +34,8 @@ export interface Config {
   SLASH_COMMAND_ROLES: string[]
 
   WEBHOOK: string
+  REGEX_AUTH_PREFIX: string
+  REGEX_MATCH_UUID: string
   REGEX_SERVER_PREFIX: string
   REGEX_MATCH_CHAT_MC: string
   REGEX_IGNORED_CHAT: string
@@ -37,6 +43,8 @@ export interface Config {
 
   SERVER_NAME: string
   SERVER_IMAGE: string
+  AVATAR_URL: string
+  AVATAR_DEFAULT: string
   SHOW_SERVER_STATUS: boolean
   SHOW_PLAYER_CONN_STAT: boolean
   SHOW_PLAYER_ADVANCEMENT: boolean

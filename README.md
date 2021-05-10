@@ -57,7 +57,6 @@ You can also easily Deploy to Heroku and the like, just be sure to edit `YOUR_UR
     
     "USE_WEBHOOKS": true, /* If you want to use snazzy webhooks */
     "WEBHOOK_URL": "DISCORD_WEBHOOK_URL_HERE", /* Be sure to create a webhook in the channel settings and place it here! */
-    "IGNORE_WEBHOOKS": true, /* Ignore any messages that are sent by webhooks. If disabled, then all webhooks but those sent from the configured webhook will be handled as well */
     "DISCORD_TOKEN": "<12345>", /* Discord bot token. [Click here](https://discordapp.com/developers/applications/me) to create you application and add a bot to it. */
     "DISCORD_CHANNEL_ID": "<channel>", /* Discord channel ID for for the discord bot. Enable developer mode in your Discord client, then right click channel and select "Copy ID". */
     "DISCORD_CHANNEL_NAME": "#<channel name>" /* The Discord channel name. It is recommended to use the ID if the bot is in multiple servers. The ID will take precedence. */
@@ -67,8 +66,11 @@ You can also easily Deploy to Heroku and the like, just be sure to edit `YOUR_UR
     "MINECRAFT_SERVER_RCON_PORT": <1-65535>, /* Minecraft server rcon port */
     "MINECRAFT_SERVER_RCON_PASSWORD": "<your password>", /* Minecraft server rcon password */
     "MINECRAFT_TELLRAW_TEMPLATE": "[{\"color\": \"white\", \"text\": \"<%username%> %message%\"}]", /* Tellraw template to display in Minecraft */
-    "MINECRAFT_TELLRAW_DOESNT_EXIST": false, /* Minecraft doesn't have the tellraw command (<1.7.2), use say instead. !this may be dangerous! */
-    "MINECRAFT_TELLRAW_DOESNT_EXIST_SAY_TEMPLATE": "<%username%> %message%", /* used when MINECRAFT_TELLRAW_DOESNT_EXIST is set to true. say template to display on minecraft, same as MINECRAFT_TELLRAW_TEMPLATE. */
+    "MINECRAFT_JSONTEXT": false, /* Set to true to disable the above string template and build a proper JSON text object for the tellraw command, configure below */
+    "MINECRAFT_JSONTEXT_USERNAME_COLOR": "white", /* Username color, applies to the next line */
+    "MINECRAFT_JSONTEXT_USERNAME_FORMAT": "<%username%>", /* Prepend each Discord message in-game with this - %username% and %discriminator% are available */
+    "MINECRAFT_JSONTEXT_COLOR": "white", /* Text color, applies to the message body */
+    "MINECRAFT_JSONTEXT_SPOILERS": false, /* Turn Discord spoilered text into obfuscated text with plain text hover events */
     
     "IS_LOCAL_FILE": false, /* should tail the local file, may be a little buggy. please report any you find */
     "LOCAL_FILE_PATH": "/usr/home/minecraft_server/logs/latest.log", /* the path to the local file if specified */
@@ -81,13 +83,17 @@ You can also easily Deploy to Heroku and the like, just be sure to edit `YOUR_UR
     "SLASH_COMMAND_ROLES": [], /* if the above is enabled, the names of the roles which can run slash commands */
     
     "WEBHOOK": "/minecraft/hook", /* Web hook, where to send the log to */
-    "REGEX_SERVER_PREFIX": "\\[Server thread/INFO\\]:", /* What the lines of the log should start with */
+    "REGEX_AUTH_PREFIX": "\\[User Authenticator #\\d+/INFO\\]:", /* What player authentication log lines should start with */
+    "REGEX_MATCH_UUID": "^UUID of player (.*) is (.*)", /* What to match for capturing UUIDs (best to leave as default) */
+    "REGEX_SERVER_PREFIX": "\\[Server thread/INFO\\]:", /* What chat log lines should start with */
     "REGEX_MATCH_CHAT_MC": "^<([^>]*)> (.*)", /* What to match for chat (best to leave as default) */
     "REGEX_IGNORED_CHAT": "packets too frequently", /* What to ignore, you can put any regex for swear words for example and it will  be ignored */
     "DEBUG": false, /* Dev debugging */
 
     "SERVER_NAME": "Shulker", /* The username used when displaying any server information in chat, e.g., Server - Shulker : Server message here*/
     "SERVER_IMAGE": "", /* Image for the server when sending such messages (if enabled below). Only for WebHooks. */
+    "AVATAR_URL": "https://minotar.net/helm/%username%/256.png", /* Player avatar URL template - %username% and %uuid% will be replaced with relevant values */
+    "AVATAR_DEFAULT": "https://minotar.net/helm/Steve/256.png", /* Player avatar to show when using %uuid% above but we haven't captured a UUID for the player */
     "SHOW_SERVER_STATUS: false, /* Shows when the server turns on and off e.g., Server - Shulker : Server is online */
     "SHOW_PLAYER_CONN_STAT": false, /* Shows player connection status in chat, e.g., Server - Shulker : TheMachine joined the game */
     "SHOW_PLAYER_ADVANCEMENT": false, /* Shows when players earn advancements in chat, e.g., Server - Shulker : TheMachine has made the advacement [MEME - Machine] */
@@ -100,6 +106,7 @@ You can also easily Deploy to Heroku and the like, just be sure to edit `YOUR_UR
 ## FAQ
 * How do I make this work on a modded server?
   - Try replacing `REGEX_SERVER_PREFIX` with `"\\[Server thread/INFO\\] \\[.*\\]:"`
+  - You may also need to replace `REGEX_AUTH_PREFIX` with `"\\[User Authenticator #\\d+/INFO\\] \\[.*\\]:"`
   
 * Why can't I send commands even if I have the option enabled?
   - Make sure that you have a role on the server which is put in the array `SLASH_COMMAND_ROLES` case-sensitive.

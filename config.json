@@ -3,7 +3,6 @@
 
     "USE_WEBHOOKS": true,
     "WEBHOOK_URL": "DISCORD_WEBHOOK_URL_HERE",
-    "IGNORE_WEBHOOKS": true,
     "DISCORD_TOKEN": "TOKEN_HERE",
     "DISCORD_CHANNEL_ID": "",
     "DISCORD_CHANNEL_NAME": "#bot",
@@ -13,8 +12,11 @@
     "MINECRAFT_SERVER_RCON_PORT": 25575,
     "MINECRAFT_SERVER_RCON_PASSWORD": "password",
     "MINECRAFT_TELLRAW_TEMPLATE": "[{\"color\": \"white\", \"text\": \"<%username%> %message%\"}]",
-    "MINECRAFT_TELLRAW_DOESNT_EXIST": false,
-    "MINECRAFT_TELLRAW_DOESNT_EXIST_SAY_TEMPLATE": "<%username%> %message%",
+    "MINECRAFT_JSONTEXT": false,
+    "MINECRAFT_JSONTEXT_USERNAME_COLOR": "white",
+    "MINECRAFT_JSONTEXT_USERNAME_FORMAT": "<%username%>",
+    "MINECRAFT_JSONTEXT_COLOR": "white",
+    "MINECRAFT_JSONTEXT_SPOILERS": false,
 
     "IS_LOCAL_FILE": false,
     "LOCAL_FILE_PATH": "/usr/home/minecraft_server/logs/latest.log",
@@ -27,6 +29,8 @@
     "SLASH_COMMAND_ROLES": [],
 
     "WEBHOOK": "/minecraft/hook",
+    "REGEX_AUTH_PREFIX": "\\[User Authenticator #\\d+/INFO\\]:",
+    "REGEX_MATCH_UUID": "^UUID of player (.*) is (.*)",
     "REGEX_SERVER_PREFIX": "\\[Server thread/INFO\\]:",
     "REGEX_MATCH_CHAT_MC": "^<([^>]*)> (.*)",
     "REGEX_IGNORED_CHAT": "packets too frequently",
@@ -34,6 +38,8 @@
 
     "SERVER_NAME": "Shulker",
     "SERVER_IMAGE": "",
+    "AVATAR_URL": "https://minotar.net/helm/%username%/256.png",
+    "AVATAR_DEFAULT": "https://minotar.net/helm/Steve/256.png",
     "SHOW_SERVER_STATUS": false,
     "SHOW_PLAYER_CONN_STAT": false,
     "SHOW_PLAYER_ADVANCEMENT": false,
