@@ -126,7 +126,7 @@ class MinecraftHandler {
           console.log('[DEBUG]: Server has stopped')
         }
         return { username: serverUsername, message: 'Server is offline', uuid: 'server' }
-    } else if (this.config.SHOW_PLAYER_ADVANCEMENT && logLine.includes('made the advancement')) {
+    } else if (this.config.SHOW_PLAYER_ADVANCEMENT && logLine.match(/^[\w_]+ has (made the advancement|reached the goal|completed the challenge) \[([^\]]+)\]$/)) {
       // handle advancements
       if (this.config.DEBUG){
         console.log('[DEBUG] A player has made an advancement')
